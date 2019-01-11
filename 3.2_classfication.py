@@ -25,8 +25,15 @@ class Net(torch.nn.Module):
         x = F.relu(self.hidden(x))
         x = self.out(x)
         return x
-    
-net = Net(n_feature=2, n_hidden=10, n_output=2)
+   
+net1 = Net(n_feature=2, n_hidden=10, n_output=2)
+#Fast nn setup
+net = torch.nn.Sequential(
+    torch.nn.Linear(2, 10),
+    torch.nn.ReLU(),
+    torch.nn.Linear(10, 2)
+
+)
 print(net)
 
 # #train
@@ -43,14 +50,15 @@ for t in range(200):
     loss.backward()
     optimizer.step()
 
-    plt.cla() #remove the privious dots
-    prediction = torch.max(out, 1)[1]
-    pred_y = prediction.data.numpy()
-    target_y = y.data.numpy()
-    plt.scatter(x.data.numpy()[:, 0], x.data.numpy()[:, 1], c=pred_y, s=100, lw=0, cmap='RdYlGn')
-    accuracy = float((pred_y == target_y).astype(int).sum()) / float(target_y.size)
-    plt.text(1.5, -4, 'Accuracy=%.2f' % accuracy, fontdict={'size': 20, 'color':  'red'})
-    plt.pause(0.1)
+    if not t % 5:
+        plt.cla() #remove the privious dots
+        prediction = torch.max(out, 1)[1]
+        pred_y = prediction.data.numpy()
+        target_y = y.data.numpy()
+        plt.scatter(x.data.numpy()[:, 0], x.data.numpy()[:, 1], c=pred_y, s=100, lw=0, cmap='RdYlGn')
+        accuracy = float((pred_y == target_y).astype(int).sum()) / float(target_y.size)
+        plt.text(1.5, -4, 'Accuracy=%.2f' % accuracy, fontdict={'size': 20, 'color':  'red'})
+        plt.pause(0.1)
 
 plt.ioff()
 plt.show
