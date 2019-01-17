@@ -16,11 +16,12 @@ import numpy as numpy
 import matplotlib.pyplot as pyplot
 import torch.utils.data as Data
 import torchvision
+import torch.nn.functional as F
 
 torch.manual_seed(1)
 
 #hyper parameters
-EPOCH = 1
+EPOCH = 10
 BATCH_SIZE = 50
 LR = 0.001
 DOWNLOAD_MNIST = False  #MINST is the 1 dim handwrite data set
@@ -99,7 +100,7 @@ for epoch in range(EPOCH): #one epoch in this case
             test_out, last_layer = cnn(test_x)
             pred_y = torch.max(test_out, 1)[1].data.numpy()       
             accuracy = float((pred_y == test_y.data.numpy()).astype(int).sum()) / float(test_y.size(0))
-            print('Epoch:', epoch, '| train loss: %.4f' % loss.data.numpy(), '| test accuracy: %.2f' % accuracy)
+            print('Epoch:', epoch, '| train loss: %.4f' % loss.data.numpy(), '| test accuracy: %.4f' % accuracy)
 
 
 
